@@ -4,6 +4,8 @@ import "./globals.css";
 import Providers from "@/components/providers";
 import { ClerkProvider } from "@clerk/nextjs";
 
+import { csCZ } from "@clerk/localizations";
+
 const geistSans = Geist({
 	variable: "--font-geist-sans",
 	subsets: ["latin"],
@@ -25,7 +27,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<ClerkProvider>
+		<ClerkProvider localization={csCZ}>
 			<html lang="cs" suppressHydrationWarning>
 				<body
 					className={`${geistSans.variable} ${openSans.variable} antialiased`}
