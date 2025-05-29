@@ -1,4 +1,5 @@
 import { db } from "@/lib/prismaClient";
+import { stripe } from "@/lib/stripeClient";
 import { tryCatch } from "@/utils/try-catch";
 import { verifyWebhook } from "@clerk/nextjs/webhooks";
 import { NextRequest } from "next/server";
@@ -29,11 +30,24 @@ export async function POST(req: NextRequest) {
 		return new Response("User with this ID already exists", { status: 200 });
 	}
 
+	const { data: customer, error: customerErr } = await tryCatch(
+		stripe.customers.create({
+			email: emailAddress,
+			metadata: {
+				clerk_id: clerkUserId,
+			},
+		})
+	);
+
+	if (customerErr) {
+		return new Response("Failed to create Stripe customer", { status: 500 });
+	}
+
 	const newUser = await db.user.create({
 		data: {
 			clerkId: clerkUserId,
 			email: emailAddress,
-			stripeCustomerId: "cus_abcdefghijk",
+			stripeCustomerId: customer.id,
 		},
 	});
 
