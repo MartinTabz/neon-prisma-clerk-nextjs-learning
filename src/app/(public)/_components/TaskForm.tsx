@@ -16,7 +16,6 @@ import { useForm } from "react-hook-form";
 import {
 	Form,
 	FormControl,
-	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
@@ -26,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createTask } from "../actions";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type TaskData = {
 	id: string;
@@ -58,6 +58,8 @@ export default function TaskForm({ mode = "create", data }: Props) {
 	const [show, setShow] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
+	const router = useRouter();
+
 	const form = useForm<z.infer<typeof taskformSchema>>({
 		resolver: zodResolver(taskformSchema),
 		defaultValues:
@@ -75,7 +77,14 @@ export default function TaskForm({ mode = "create", data }: Props) {
 		const { success, error } = await createTask(values);
 
 		if (error) {
-			toast("Něco se pokazilo", { description: error });
+			toast("Něco se pokazilo", {
+				description: error,
+				action: error ==
+					"Pokud chceš přidat další úkol, tak musíš zaplatit" && {
+					label: "Koupit",
+					onClick: () => router.push("/cenik"),
+				},
+			});
 		}
 
 		if (success) {

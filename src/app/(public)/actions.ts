@@ -18,13 +18,22 @@ export async function createTask(values: z.infer<typeof taskformSchema>) {
 
 	const userData = await db.user.findUnique({
 		where: { clerkId: userId },
-		select: { id: true },
+		select: { id: true, subscribed: true },
 	});
 
 	if (!userData) {
 		return {
 			success: false,
 			error: "Nepodařilo se najít tvůj profil v databázi",
+		};
+	}
+
+	const tasksCount = await db.task.count({ where: { userId: userData.id } });
+
+	if (tasksCount >= 3 && userData.subscribed != true) {
+		return {
+			success: false,
+			error: "Pokud chceš přidat další úkol, tak musíš zaplatit",
 		};
 	}
 

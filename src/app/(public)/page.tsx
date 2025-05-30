@@ -16,8 +16,6 @@ export default async function IndexPage() {
 		orderBy: { createdAt: "desc" },
 	});
 
-	console.log(taskData);
-
 	return (
 		<div className="w-full flex items-center justify-center py-16">
 			<div className="max-w-[800px] w-full">
