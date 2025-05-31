@@ -13,7 +13,7 @@ export default function PublicHeader() {
 						<BookMarked /> Úkolníček
 					</Button>
 				</Link>
-				<nav>
+				<nav className="hidden sm:block">
 					<Link className="px-5" href={"/"}>
 						Úkoly
 					</Link>
@@ -21,7 +21,7 @@ export default function PublicHeader() {
 						Ceník
 					</Link>
 				</nav>
-				<div className="flex items-center justify-end gap-2">
+				<div className="items-center justify-end gap-2 hidden sm:flex">
 					<SignedOut>
 						<Link href={"/prihlasit"}>
 							<Button size={"sm"}>Přihlásit</Button>
