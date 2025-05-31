@@ -17,7 +17,7 @@ model User {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   clerkId String @unique
   email String @unique
-  stripeCustomerId String @db.VarChar(255)
+  stripeCustomerId String @unique @db.VarChar(255)
   createdAt DateTime @default(now())
   subscribed Boolean @default(false)
 
