@@ -3,6 +3,7 @@ import { stripe } from "@/lib/stripeClient";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { Check, Loader2 } from "lucide-react";
 import Link from "next/link";
+import PurchaseButton from "./_components/PurchaseButton";
 
 export default async function PricesPage() {
 	const product = await stripe.products.retrieve(
@@ -77,7 +78,9 @@ export default async function PricesPage() {
 							)}
 						</p>
 						<SignedIn>
-							<Button>Získat přístup</Button>
+							<PurchaseButton
+								disabled={price == null ? true : false}
+							/>
 						</SignedIn>
 						<SignedOut>
 							<Link href="/prihlasit?redirect_url=/cenik">
